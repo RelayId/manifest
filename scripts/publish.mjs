@@ -41,7 +41,12 @@ const verifiedArtifacts = inputArtifacts.map((artifact) => ({ ...artifact, sha25
 
 if (process.env.VERIFY_DOWNLOAD === 'true') {
   for (const artifact of verifiedArtifacts) {
-    const response = await fetch(artifact.artifactUrl);
+    let response;
+    for (let attempt = 1; attempt <= 10; attempt += 1) {
+      response = await fetch(artifact.artifactUrl);
+      if (response.ok || (response.status !== 404 && response.status !== 502 && response.status !== 503)) break;
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+    }
     if (!response.ok) throw new Error(`Download verification failed for ${artifact.format} with HTTP ${response.status}`);
     const digest = createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex');
     if (artifact.sha256 && digest !== artifact.sha256) throw new Error(`Published ${artifact.format} digest does not match the downloaded artifact`);

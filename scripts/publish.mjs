@@ -18,7 +18,7 @@ if (!Number.isInteger(payload.versionCode) || payload.versionCode < 1) throw new
 if (!/^https:\/\/relayid\.github\.io\/manifest\//u.test(payload.downloadUrl)) throw new Error('downloadUrl is outside the approved RelayId Pages namespace');
 if (!/^https:\/\/github\.com\/RelayId\//u.test(payload.artifactUrl)) throw new Error('artifactUrl is outside the approved RelayId GitHub namespace');
 
-const path = 'public/manifest.json';
+const path = 'data/manifest.json';
 const manifest = JSON.parse(await readFile(path, 'utf8'));
 const current = manifest[target];
 if (payload.versionCode < current.versionCode) throw new Error(`Refusing to lower ${target} versionCode`);
@@ -41,9 +41,9 @@ manifest[target] = {
   versionName: payload.versionName,
   downloadUrl: payload.downloadUrl,
   artifactUrl: payload.artifactUrl,
-  sha256,
   minSupportedVersionCode: payload.minSupportedVersionCode ?? current.minSupportedVersionCode,
   mandatory: payload.mandatory === true,
 };
+if (sha256) manifest[target].sha256 = sha256;
 
 await writeFile(path, `${JSON.stringify(manifest, null, 2)}\n`);

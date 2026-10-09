@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const manifestPath = resolve('public/manifest.json');
+const manifestPath = resolve('data/manifest.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 
 function assert(condition, message) {
@@ -19,7 +19,7 @@ for (const [key, expectedPackage] of [['android', 'com.relayid.app'], ['wear', '
   assert(typeof item.versionName === 'string' && item.versionName.length > 0, `${key}.versionName is required`);
   assert(typeof item.downloadUrl === 'string' && item.downloadUrl.startsWith('https://relayid.github.io/manifest/'), `${key}.downloadUrl must be the stable RelayId Pages download URL`);
   assert(typeof item.artifactUrl === 'string' && item.artifactUrl.startsWith('https://github.com/RelayId/'), `${key}.artifactUrl must be an approved HTTPS RelayId artifact URL`);
-  assert(typeof item.sha256 === 'string' && (item.sha256 === '' || /^[a-f0-9]{64}$/u.test(item.sha256)), `${key}.sha256 must be empty or a lowercase SHA-256 digest`);
+  assert(item.sha256 === undefined || (typeof item.sha256 === 'string' && /^[a-f0-9]{64}$/u.test(item.sha256)), `${key}.sha256 must be a lowercase SHA-256 digest when present`);
   assert(Number.isInteger(item.minSupportedVersionCode) && item.minSupportedVersionCode >= 1, `${key}.minSupportedVersionCode must be a positive integer`);
   assert(typeof item.mandatory === 'boolean', `${key}.mandatory must be boolean`);
   assert(item.minSupportedVersionCode <= item.versionCode, `${key}.minSupportedVersionCode cannot exceed versionCode`);

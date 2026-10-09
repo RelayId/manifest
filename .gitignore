@@ -1,3 +1,7 @@
 node_modules/
 npm-debug.log*
 .DS_Store
+public/manifest.json
+public/index.html
+public/android/index.html
+public/wear/index.html

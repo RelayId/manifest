@@ -1,4 +1,4 @@
-name: Deploy manifest Pages
+name: Validate and deploy manifest Pages
 
 on:
   push:

@@ -25,7 +25,10 @@ jobs:
         env:
           EVENT_TYPE: ${{ github.event.action }}
           PAYLOAD: ${{ toJSON(github.event.client_payload) }}
-          VERIFY_DOWNLOAD: 'true'
+          # App and Wear release repositories are private. Their dispatching CI
+          # computes hashes from the exact uploaded assets, while this job
+          # cannot anonymously re-download those private URLs.
+          VERIFY_DOWNLOAD: 'false'
         run: node scripts/publish.mjs
       - run: npm test
       - name: Commit manifest

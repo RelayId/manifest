@@ -7,6 +7,18 @@
     "versionName": "1.0.0",
     "downloadUrl": "https://relayid.github.io/manifest/android/",
     "artifactUrl": "https://github.com/RelayId/app/releases/download/latest/relayid-android.apk",
+    "artifacts": [
+      {
+        "format": "apk",
+        "architecture": "arm64-v8a",
+        "artifactUrl": "https://github.com/RelayId/app/releases/download/latest/relayid-android.apk"
+      },
+      {
+        "format": "aab",
+        "architecture": "arm64-v8a",
+        "artifactUrl": "https://github.com/RelayId/app/releases/download/latest/relayid-android-v1.0.0-1-arm64.aab"
+      }
+    ],
     "minSupportedVersionCode": 1,
     "mandatory": false
   },
@@ -16,6 +28,16 @@
     "versionName": "1.0",
     "downloadUrl": "https://relayid.github.io/manifest/wear/",
     "artifactUrl": "https://github.com/RelayId/watch/releases/download/wear-latest/relayid-wear.apk",
+    "artifacts": [
+      {
+        "format": "apk",
+        "artifactUrl": "https://github.com/RelayId/watch/releases/download/wear-latest/relayid-wear.apk"
+      },
+      {
+        "format": "aab",
+        "artifactUrl": "https://github.com/RelayId/watch/releases/download/wear-latest/relayid-wear-v1.0-1.aab"
+      }
+    ],
     "minSupportedVersionCode": 1,
     "mandatory": false
   }

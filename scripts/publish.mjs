@@ -18,20 +18,35 @@ if (!Number.isInteger(payload.versionCode) || payload.versionCode < 1) throw new
 if (!/^https:\/\/relayid\.github\.io\/manifest\//u.test(payload.downloadUrl)) throw new Error('downloadUrl is outside the approved RelayId Pages namespace');
 if (!/^https:\/\/github\.com\/RelayId\//u.test(payload.artifactUrl)) throw new Error('artifactUrl is outside the approved RelayId GitHub namespace');
 
+const inputArtifacts = payload.artifacts ?? [{ format: 'apk', artifactUrl: payload.artifactUrl, sha256: payload.sha256 }];
+if (!Array.isArray(inputArtifacts) || inputArtifacts.length === 0) throw new Error('artifacts must be a non-empty array');
+const allowedFormats = new Set(['apk', 'aab']);
+for (const [index, artifact] of inputArtifacts.entries()) {
+  if (!artifact || !allowedFormats.has(artifact.format)) throw new Error(`artifacts[${index}].format must be apk or aab`);
+  if (typeof artifact.artifactUrl !== 'string' || !/^https:\/\/github\.com\/RelayId\//u.test(artifact.artifactUrl)) {
+    throw new Error(`artifacts[${index}].artifactUrl is outside the approved RelayId GitHub namespace`);
+  }
+  if (artifact.sha256 && !/^[a-f0-9]{64}$/u.test(artifact.sha256)) throw new Error(`artifacts[${index}].sha256 must be a lowercase SHA-256 digest`);
+}
+if (!inputArtifacts.some((artifact) => artifact.format === 'apk' && artifact.artifactUrl === payload.artifactUrl)) {
+  throw new Error('artifacts must include the primary APK artifact');
+}
+
 const path = 'data/manifest.json';
 const manifest = JSON.parse(await readFile(path, 'utf8'));
 const current = manifest[target];
 if (payload.versionCode < current.versionCode) throw new Error(`Refusing to lower ${target} versionCode`);
 
-let sha256 = payload.sha256 || '';
-if (sha256 && !/^[a-f0-9]{64}$/u.test(sha256)) throw new Error('sha256 must be a lowercase SHA-256 digest');
+const verifiedArtifacts = inputArtifacts.map((artifact) => ({ ...artifact, sha256: artifact.sha256 || '' }));
 
 if (process.env.VERIFY_DOWNLOAD === 'true') {
-  const response = await fetch(payload.artifactUrl);
-  if (!response.ok) throw new Error(`Download verification failed with HTTP ${response.status}`);
-  const digest = createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex');
-  if (sha256 && digest !== sha256) throw new Error('Published digest does not match the downloaded artifact');
-  sha256 = digest;
+  for (const artifact of verifiedArtifacts) {
+    const response = await fetch(artifact.artifactUrl);
+    if (!response.ok) throw new Error(`Download verification failed for ${artifact.format} with HTTP ${response.status}`);
+    const digest = createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex');
+    if (artifact.sha256 && digest !== artifact.sha256) throw new Error(`Published ${artifact.format} digest does not match the downloaded artifact`);
+    artifact.sha256 = digest;
+  }
 }
 
 manifest.generatedAt = new Date().toISOString();
@@ -41,9 +56,17 @@ manifest[target] = {
   versionName: payload.versionName,
   downloadUrl: payload.downloadUrl,
   artifactUrl: payload.artifactUrl,
+  artifacts: verifiedArtifacts.map(({ format, architecture, artifactUrl, sha256 }) => ({
+    format,
+    ...(architecture ? { architecture } : {}),
+    artifactUrl,
+    ...(sha256 ? { sha256 } : {}),
+  })),
   minSupportedVersionCode: payload.minSupportedVersionCode ?? current.minSupportedVersionCode,
   mandatory: payload.mandatory === true,
 };
-if (sha256) manifest[target].sha256 = sha256;
+const primary = verifiedArtifacts.find((artifact) => artifact.format === 'apk' && artifact.artifactUrl === payload.artifactUrl);
+if (primary?.sha256) manifest[target].sha256 = primary.sha256;
+else delete manifest[target].sha256;
 
 await writeFile(path, `${JSON.stringify(manifest, null, 2)}\n`);

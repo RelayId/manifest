@@ -20,6 +20,13 @@ for (const [key, expectedPackage] of [['android', 'com.relayid.app'], ['wear', '
   assert(typeof item.downloadUrl === 'string' && item.downloadUrl.startsWith('https://relayid.github.io/manifest/'), `${key}.downloadUrl must be the stable RelayId Pages download URL`);
   assert(typeof item.artifactUrl === 'string' && item.artifactUrl.startsWith('https://github.com/RelayId/'), `${key}.artifactUrl must be an approved HTTPS RelayId artifact URL`);
   assert(item.sha256 === undefined || (typeof item.sha256 === 'string' && /^[a-f0-9]{64}$/u.test(item.sha256)), `${key}.sha256 must be a lowercase SHA-256 digest when present`);
+  assert(Array.isArray(item.artifacts) && item.artifacts.length > 0, `${key}.artifacts must be a non-empty array`);
+  assert(item.artifacts.some((artifact) => artifact.format === 'apk' && artifact.artifactUrl === item.artifactUrl), `${key}.artifacts must include the primary APK artifact`);
+  for (const [index, artifact] of item.artifacts.entries()) {
+    assert(artifact && (artifact.format === 'apk' || artifact.format === 'aab'), `${key}.artifacts[${index}].format must be apk or aab`);
+    assert(typeof artifact.artifactUrl === 'string' && artifact.artifactUrl.startsWith('https://github.com/RelayId/'), `${key}.artifacts[${index}].artifactUrl must be an approved HTTPS RelayId artifact URL`);
+    assert(artifact.sha256 === undefined || (typeof artifact.sha256 === 'string' && /^[a-f0-9]{64}$/u.test(artifact.sha256)), `${key}.artifacts[${index}].sha256 must be a lowercase SHA-256 digest when present`);
+  }
   assert(Number.isInteger(item.minSupportedVersionCode) && item.minSupportedVersionCode >= 1, `${key}.minSupportedVersionCode must be a positive integer`);
   assert(typeof item.mandatory === 'boolean', `${key}.mandatory must be boolean`);
   assert(item.minSupportedVersionCode <= item.versionCode, `${key}.minSupportedVersionCode cannot exceed versionCode`);

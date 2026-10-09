@@ -1,0 +1,37 @@
+name: Publish update metadata
+
+on:
+  repository_dispatch:
+    types: [publish-android, publish-wear]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-manifest
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+      - name: Publish validated artifact metadata
+        env:
+          EVENT_TYPE: ${{ github.event.action }}
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+          VERIFY_DOWNLOAD: 'true'
+        run: node scripts/publish.mjs
+      - run: npm test
+      - name: Commit manifest
+        run: |
+          git config user.name 'relayid-manifest[bot]'
+          git config user.email 'relayid-manifest[bot]@users.noreply.github.com'
+          git add public/manifest.json
+          git diff --cached --quiet || git commit -m "Publish ${{ github.event.action }} update metadata"
+          git push

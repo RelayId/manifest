@@ -24,8 +24,6 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24.x
-          cache: pnpm
-          cache-dependency-path: package.json
       - name: Publish validated artifact metadata
         env:
           EVENT_TYPE: ${{ github.event.action }}

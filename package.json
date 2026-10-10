@@ -1,6 +1,7 @@
 {
   "name": "@relayid/update-manifest",
   "private": true,
+  "packageManager": "pnpm@10.33.0",
   "type": "module",
   "scripts": {
     "test": "node scripts/generate.mjs && node scripts/validate.mjs",

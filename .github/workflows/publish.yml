@@ -18,10 +18,13 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 2
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.0
       - uses: actions/setup-node@v7
         with:
           node-version: 24.x
-          cache: npm
+          cache: pnpm
           cache-dependency-path: package.json
       - name: Publish validated artifact metadata
         env:
@@ -32,7 +35,7 @@ jobs:
           # cannot anonymously re-download those private URLs.
           VERIFY_DOWNLOAD: 'false'
         run: node scripts/publish.mjs
-      - run: npm test
+      - run: pnpm test
       - name: Commit manifest
         run: |
           git config user.name 'relayid-manifest[bot]'

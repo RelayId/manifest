@@ -12,7 +12,7 @@ for (const field of required) {
   if (payload[field] === undefined) throw new Error(`Missing payload.${field}`);
 }
 
-const expectedPackage = target === 'android' ? 'com.relayid.app' : 'com.relayid.watch';
+const expectedPackage = 'com.relayid.app';
 if (payload.package !== expectedPackage) throw new Error(`Unexpected package for ${target}`);
 if (!Number.isInteger(payload.versionCode) || payload.versionCode < 1) throw new Error('versionCode must be a positive integer');
 if (!/^https:\/\/relayid\.github\.io\/manifest\//u.test(payload.downloadUrl)) throw new Error('downloadUrl is outside the approved RelayId Pages namespace');

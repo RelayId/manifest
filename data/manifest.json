@@ -31,7 +31,7 @@
     "sha256": "47956f2846bf0b45b59bc4fa6dc9168456433d472a60e2a310b23c9acd1e3455"
   },
   "wear": {
-    "package": "com.relayid.watch",
+    "package": "com.relayid.app",
     "versionCode": 1,
     "versionName": "1.0.0",
     "downloadUrl": "https://relayid.github.io/manifest/wear/",

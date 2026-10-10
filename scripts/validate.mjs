@@ -11,7 +11,7 @@ function assert(condition, message) {
 assert(manifest.schema === 1, 'schema must be 1');
 assert(typeof manifest.generatedAt === 'string' && !Number.isNaN(Date.parse(manifest.generatedAt)), 'generatedAt must be an ISO date');
 
-for (const [key, expectedPackage] of [['android', 'com.relayid.app'], ['wear', 'com.relayid.watch']]) {
+for (const [key, expectedPackage] of [['android', 'com.relayid.app'], ['wear', 'com.relayid.app']]) {
   const item = manifest[key];
   assert(item && typeof item === 'object', `${key} entry is required`);
   assert(item.package === expectedPackage, `${key}.package must be ${expectedPackage}`);

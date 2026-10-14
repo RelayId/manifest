@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-14T13:15:37.836Z",
+  "generatedAt": "2026-10-14T13:21:56.777Z",
   "android": {
     "package": "com.relayid.app",
     "versionCode": 1,
@@ -12,23 +12,23 @@
         "format": "apk",
         "architecture": "arm64-v8a",
         "artifactUrl": "https://github.com/RelayId/app/releases/download/latest/relayid-android-arm64-v8a.apk",
-        "sha256": "57344e6e8e9e8dda77dd1267fc366893d1a9b5fa9c99f3ff91d63064bba36d93"
+        "sha256": "e7ff8ac1884f11298007a85a470cd4f19ab8f649873b7df861ef001f21a9f4bd"
       },
       {
         "format": "apk",
         "architecture": "armeabi-v7a",
         "artifactUrl": "https://github.com/RelayId/app/releases/download/latest/relayid-android-armeabi-v7a.apk",
-        "sha256": "92fb797995123b1f97ed628a47c415d2a82f752b94721965cdb9467524e2b956"
+        "sha256": "435c169c3e128021ddc02fb30a36b32ebf2a79309d0abd91e32782925baf2085"
       },
       {
         "format": "aab",
         "artifactUrl": "https://github.com/RelayId/app/releases/download/latest/relayid-android.aab",
-        "sha256": "4cac5a4c4bb8ab1d096b7dc987db495126d5d55106e180204ac4697720475824"
+        "sha256": "4d1ecc5b029b7120c2f9fe55f94706978f97947225cb039c2a138c3fff1f43b0"
       }
     ],
     "minSupportedVersionCode": 1,
     "mandatory": false,
-    "sha256": "57344e6e8e9e8dda77dd1267fc366893d1a9b5fa9c99f3ff91d63064bba36d93"
+    "sha256": "e7ff8ac1884f11298007a85a470cd4f19ab8f649873b7df861ef001f21a9f4bd"
   },
   "wear": {
     "package": "com.relayid.app",

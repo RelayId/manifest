@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-15T10:27:07.511Z",
+  "generatedAt": "2026-10-15T10:31:25.263Z",
   "android": {
     "package": "com.relayid.app",
     "versionCode": 79,
@@ -32,7 +32,7 @@
   },
   "wear": {
     "package": "com.relayid.app",
-    "versionCode": 40,
+    "versionCode": 42,
     "versionName": "1.0.0",
     "downloadUrl": "https://relayid.github.io/manifest/wear/",
     "artifactUrl": "https://github.com/RelayId/watch/releases/download/wear-latest/relayid-wear.apk",
@@ -40,16 +40,16 @@
       {
         "format": "apk",
         "artifactUrl": "https://github.com/RelayId/watch/releases/download/wear-latest/relayid-wear.apk",
-        "sha256": "ec69b1117f2eb8d84f5dbda95e4a2190dd1c13f87f282d7e67f95601ed376d7e"
+        "sha256": "43bc5ea5552ad081b7796b39c7b517f753b237ba10a1d40dcea76d5703822c15"
       },
       {
         "format": "aab",
         "artifactUrl": "https://github.com/RelayId/watch/releases/download/wear-latest/relayid-wear.aab",
-        "sha256": "10fbbb3683416dbc7a97bf93d68b08530c27c489602dd964181962ff57bf26be"
+        "sha256": "c757e97778d3a67b92049434c307faedb1ad18627e3c2dfefb2c8afc1c6ed03b"
       }
     ],
     "minSupportedVersionCode": 1,
     "mandatory": false,
-    "sha256": "ec69b1117f2eb8d84f5dbda95e4a2190dd1c13f87f282d7e67f95601ed376d7e"
+    "sha256": "43bc5ea5552ad081b7796b39c7b517f753b237ba10a1d40dcea76d5703822c15"
   }
 }
